@@ -28,18 +28,20 @@ void ofApp::draw() {
   // Draw all the best segment replacements in place of the old ones.
   for ( auto const & seg : images.at(0).segments )
     if ( seg.bestSegMatch != nullptr ) {
+
       if ( drawStretched )
         seg.bestSegMatch->imgFinal.draw(seg.topLeft, seg.imgSeg.getWidth(), seg.imgSeg.getHeight());
       else
-        seg.bestSegMatch->imgFinal.draw(seg.topLeft, seg.bestSegMatch->imgFinal.getWidth(), seg.bestSegMatch->imgFinal.getHeight());
+        seg.bestSegMatch->imgFinal.draw(seg.topLeft);
     }
   } else {
     exit();
     cout << "No images supplied, or incorrectly... exiting." << endl;
   }
 
-  // draw the used threshes.
-  ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight() );
+  // draw make info
+  ofDrawBitmapStringHighlight( arguments.at(3) + " + " + arguments.at(4), 10, ofGetHeight()-35 );
+  ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight()-10 );
 }
 
 void ofApp::mousePressed(int x, int y, int button) {}
@@ -50,7 +52,7 @@ void ofApp::keyPressed(int key) {
     (toDisplay < images.size()) ? toDisplay ++ : toDisplay = 0;
   } else if (key == OF_KEY_RIGHT) {
     // Kicks of replacement.
-    Architecture::findBestMatches(images.at(0), images.at(1));
+    Architecture::findBestMatches(images.at(0), images.at(1), stoi(arguments.at(5)));
   } else if (key == OF_KEY_LEFT) {
     drawStretched =! drawStretched;
   } else if (key == OF_KEY_UP) {

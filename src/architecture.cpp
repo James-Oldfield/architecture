@@ -93,11 +93,11 @@ Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), t
     }
   }
 
-  cout << "Now exporting the segments..." << endl;
+ //  cout << "Now exporting the segments..." << endl;
 
-  for_each( segments.begin(), segments.end(), [] ( Segment &seg ) {
-    seg.exportSegment();
-  } );
+   for_each( segments.begin(), segments.end(), [] ( Segment &seg ) {
+     seg.exportSegment();
+   } );
 
 }
 
@@ -107,17 +107,21 @@ Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), t
  * @param arc1 The first architecture to compare.
  * @param arc2 The second architecture to compare.
  */
-void Architecture::findBestMatches(Architecture & arc1, Architecture & arc2) {
+void Architecture::findBestMatches(Architecture & arc1, Architecture & arc2, int recursive) {
   
   cout << "-----" << endl;
   cout << "Finding best matching segments between the two images with specificity of between " << Segment::matchUpper << " and " << Segment::matchLower << endl;
 
-  for (int i=0; i<arc1.segments.size(); i++) {
-    for (int j=0; j<arc2.segments.size(); j++) {
-      Segment::compareSegs( arc1.segments.at(i), arc2.segments.at(j) );
-    }
-  }
-}
+  for ( auto & arc : arc1.segments )
+    for ( auto & arc2 : arc2.segments )
+      Segment::compareSegs( arc, arc2 );
+
+  // provides an option to use own architecture to recreate. passed through command line, 'arguments.at(5)'
+  if ( recursive )
+    for ( auto & arc : arc1.segments )
+      for ( auto & arc2 : arc1.segments )
+        Segment::compareSegs( arc, arc2 );
+}//
 
 /**
  * Checks whether or not there is an intersection been two non-infinite line segments.

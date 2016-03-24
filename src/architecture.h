@@ -46,7 +46,7 @@ class Architecture {
      * @param arc1 The first architecture to compare.
      * @param arc2 The second architecture to compare.
      */
-    static void findBestMatches(Architecture & arc1, Architecture & arc2);
+    static void findBestMatches(Architecture & arc1, Architecture & arc2, int recusrive);
 
     vector<Segment> segments;
 };

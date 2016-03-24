@@ -101,5 +101,4 @@ void Segment::removeBackground() {
 
   toOf( alphaImage, imgFinal );
   name = "seg" + to_string(imageNo) + "/segment" + to_string(cCount) + ".png";
-  // imgFinal.save( name );
 }
