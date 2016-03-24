@@ -190,6 +190,10 @@ bool Architecture::doSegsIntersect(ofPolyline a, ofPolyline b) {
 
 }
 
+void Architecture::drawImageOriginal() {
+  imgCopy.draw(0, 0);
+}
+
 /**
  *  Mainly an interface to drawing the ofImage
  */
@@ -198,21 +202,22 @@ void Architecture::drawImage() {
 
   // Draw the points of intersection
   // given a reasonable threshold
-  for(auto const &pt : iPts) {
-    ofDrawCircle(pt.x, pt.y, 2);
+  if( drawIntersections )
+    for(auto const &pt : iPts) {
+      ofDrawCircle(pt.x, pt.y, 2);
 
-    for(auto const &pt2 : iPts) {
-      if(abs(pt2.x - pt.x) > 75 &&
-         abs(pt2.x - pt.x) < image.getWidth() / 1.5 &&
-         abs(pt2.y - pt.y) > 75 &&
-         abs(pt2.y - pt.y) < image.getWidth() / 1.5
-        ) {
-          ofImage tmp;
-          ofRectangle imgSpace = ofRectangle(pt, pt2);
+      for(auto const &pt2 : iPts) {
+        if(abs(pt2.x - pt.x) > 75 &&
+           abs(pt2.x - pt.x) < image.getWidth() / 1.5 &&
+           abs(pt2.y - pt.y) > 75 &&
+           abs(pt2.y - pt.y) < image.getWidth() / 1.5
+          ) {
+            ofImage tmp;
+            ofRectangle imgSpace = ofRectangle(pt, pt2);
 
-          ofNoFill();
-          ofDrawRectangle(imgSpace);
+            ofNoFill();
+            ofDrawRectangle(imgSpace);
+        }
       }
     }
-  }
 }

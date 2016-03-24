@@ -4,25 +4,42 @@ using namespace ofxCv;
 using namespace cv;
 
 void ofApp::setup() {
-  Architecture img = Architecture("http://www.tekuto.com/wp-content/themes/tekuto2nd/images/topmain/toruso01.jpg?=20151006");
-  Architecture img2 = Architecture("long.jpg");
+  Architecture img1(arguments.at(3), stoi(arguments.at(1)));
+  Architecture img2(arguments.at(4), stoi(arguments.at(2)));
 
-  images.push_back(img);
+  images.push_back(img1);
   images.push_back(img2);
-
-  Architecture::findBestMatches(images.at(0), images.at(1));
 }
 
 void ofApp::update() {};
 
 void ofApp::draw() {
-  images.at(toDisplay).drawImage();
+  ofBackground(255, 255, 255);
+  if(arguments.size() > 0) {
+    if ( toDisplay == images.size() );
+    else {
+      // draw hough or not?
+      if ( drawHough )
+        images.at(toDisplay).drawImage();
+      else
+        images.at(toDisplay).drawImageOriginal();
+    }
 
   // Draw all the best segment replacements in place of the old ones.
-  for ( auto const & seg : images.at(0).segments ) {
-    if ( seg.bestSegMatch != nullptr )
-      seg.bestSegMatch->imgFinal.draw(seg.topLeft);
+  for ( auto const & seg : images.at(0).segments )
+    if ( seg.bestSegMatch != nullptr ) {
+      if ( drawStretched )
+        seg.bestSegMatch->imgFinal.draw(seg.topLeft, seg.imgSeg.getWidth(), seg.imgSeg.getHeight());
+      else
+        seg.bestSegMatch->imgFinal.draw(seg.topLeft, seg.bestSegMatch->imgFinal.getWidth(), seg.bestSegMatch->imgFinal.getHeight());
+    }
+  } else {
+    exit();
+    cout << "No images supplied, or incorrectly... exiting." << endl;
   }
+
+  // draw the used threshes.
+  ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight() );
 }
 
 void ofApp::mousePressed(int x, int y, int button) {}
@@ -30,26 +47,13 @@ void ofApp::mousePressed(int x, int y, int button) {}
 void ofApp::keyPressed(int key) {
   if (key == OF_KEY_RETURN) {
     // Loop through the pictures
-    (toDisplay < images.size()-1) ? toDisplay ++ : toDisplay = 0;
+    (toDisplay < images.size()) ? toDisplay ++ : toDisplay = 0;
   } else if (key == OF_KEY_RIGHT) {
-    // loop incrementally through the second photo's segments.
-    (toCompare.y < images.at(1).segments.size()-1) ? toCompare.y ++ : toCompare.y = 0;
-
-    Segment::compareSegs(images.at(0).segments.at(toCompare.x), images.at(1).segments.at(toCompare.y));
+    // Kicks of replacement.
+    Architecture::findBestMatches(images.at(0), images.at(1));
   } else if (key == OF_KEY_LEFT) {
-    // loop decremently through the second photo's segments.
-    (toCompare.y > 0) ? toCompare.y -- : toCompare.y = images.at(1).segments.size()-1;
-
-    Segment::compareSegs(images.at(0).segments.at(toCompare.x), images.at(1).segments.at(toCompare.y));
+    drawStretched =! drawStretched;
   } else if (key == OF_KEY_UP) {
-    // loop incrementally through first photo's segments.
-    (toCompare.x < images.at(0).segments.size()-1) ? toCompare.x ++ : toCompare.x = 0;
-
-    Segment::compareSegs(images.at(0).segments.at(toCompare.x), images.at(1).segments.at(toCompare.y));
-  } else if (key == OF_KEY_DOWN) {
-    // loop decrementally through first photo's segments.
-    (toCompare.x > 0) ? toCompare.x -- : toCompare.x = images.at(0).segments.size()-1;
-
-    Segment::compareSegs(images.at(0).segments.at(toCompare.x), images.at(1).segments.at(toCompare.y));
+    drawHough =! drawHough;
   }
 }

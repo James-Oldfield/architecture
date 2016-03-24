@@ -24,9 +24,6 @@ class Segment {
 
     const int cCount; // local cache of global segment count
 
-    ofImage imgSeg; // the image data in ofImage format
-    ofImage imgSegH; // ditto ^ but for hough lines
-
     vector<ofPoint> edges; // stores the location of segment edges
     int h, w; // image width and height
     int imageNo; // Image index, used for folder number.
@@ -39,8 +36,8 @@ class Segment {
     void exportSegment();
     void addVertex(int i, int row); // Declare a pixel a vertex of the shape
 
-    static constexpr float matchUpper = 0.2; // Upper bounds of 'worthy' match.
-    static constexpr float matchLower = 0.5; // Lower bounds of 'worth' match.
+    static constexpr float matchUpper = 0; // Upper bounds of 'worthy' match.
+    static constexpr float matchLower = 0.75; // Lower bounds of 'worth' match.
 
     bool hasBeenUsed = false; // Checks whether this segment has been used before or not.
 
@@ -49,6 +46,8 @@ class Segment {
     double bestMatch = 100; // Stores the best match from matchShapes.
     Segment * bestSegMatch = nullptr; // Stores the best segment match.
 
+    ofImage imgSeg; // the image data in ofImage format
+    ofImage imgSegH; // ditto ^ but for hough lines
     ofImage imgFinal; // Contains the image post-background subtraction.
     Mat alphaImage; // Mat version of the image post-bg subtraction.
     Mat mask; // Stores the masked image for background removal.
