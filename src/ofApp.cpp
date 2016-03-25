@@ -29,10 +29,10 @@ void ofApp::draw() {
   for ( auto const & seg : images.at(0).segments )
     if ( seg.bestSegMatch != nullptr ) {
 
-      if ( drawStretched )
-        seg.bestSegMatch->imgFinal.draw(seg.topLeft, seg.imgSeg.getWidth(), seg.imgSeg.getHeight());
-      else
-        seg.bestSegMatch->imgFinal.draw(seg.topLeft);
+      // Resize the image to boundaries of original seg, keeping ratio.
+      auto rat = fmin( seg.imgFinal.getWidth() / seg.bestSegMatch->imgFinal.getWidth(), seg.imgFinal.getHeight() / seg.bestSegMatch->imgFinal.getHeight() );
+
+      seg.bestSegMatch->imgFinal.draw(seg.topLeft, rat * seg.bestSegMatch->imgFinal.getWidth(), rat * seg.bestSegMatch->imgFinal.getHeight());
     }
   } else {
     exit();
@@ -53,8 +53,6 @@ void ofApp::keyPressed(int key) {
   } else if (key == OF_KEY_RIGHT) {
     // Kicks of replacement.
     Architecture::findBestMatches(images.at(0), images.at(1), stoi(arguments.at(5)));
-  } else if (key == OF_KEY_LEFT) {
-    drawStretched =! drawStretched;
   } else if (key == OF_KEY_UP) {
     drawHough =! drawHough;
   }

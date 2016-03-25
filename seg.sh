@@ -18,7 +18,7 @@ elif [ "$1" = "inex" ]; then
   open -n ./bin/./creativeProject.app/ --args $2 $3 tek.jpg home-cropped.jpg 0
 elif [ "$1" = "train" ]; then
   echo "Running command line project with interior images..."
-  open -n ./bin/./creativeProject.app/ --args $2 $3 http://forums.androidcentral.com/attachments/photo-contests/110643d1396484236t-weekly-photo-contest-architecture-2014-04-03-02.01.44-1.jpg http://41.media.tumblr.com/tumblr_m57nhfQXI41ruxpd8o5_1280.jpg 0
+  open -n ./bin/./creativeProject.app/ --args $2 $3 interior-2.jpg http://forums.androidcentral.com/attachments/photo-contests/110643d1396484236t-weekly-photo-contest-architecture-2014-04-03-02.01.44-1.jpg 0
 elif [ "$1" = "brutal" ]; then
   echo "Running command line project with brutal-house images..."
   open -n ./bin/./creativeProject.app/ --args 155 160 https://pbs.twimg.com/media/CePL_W4WwAUG1Tr.jpg https://pbs.twimg.com/media/CeAzXloXEAIXTx4.jpg 0
