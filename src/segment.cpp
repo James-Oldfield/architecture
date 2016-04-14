@@ -13,7 +13,7 @@
 using namespace ofxCv;
 using namespace cv;
 
-Segment::Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, LineIntersection _intersectionTL, LineIntersection _intersectionBR, int _imageNo): imgSegH(_imgSegH), imgSeg(_imgSeg), topLeft(_topLeft), imageNo(_imageNo), intersectionTL(_intersectionTL), intersectionBR(_intersectionBR), cCount(segCount++) {}
+Segment::Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, ofPoint _bottomRight, LineIntersection _intersectionTL, LineIntersection _intersectionBR, int _imageNo): imgSegH(_imgSegH), imgSeg(_imgSeg), topLeft(_topLeft), bottomRight(_bottomRight), imageNo(_imageNo), intersectionTL(_intersectionTL), intersectionBR(_intersectionBR), cCount(segCount++), imgSpace(topLeft, bottomRight) {}
 
 int Segment::segCount = 0;
 
@@ -111,13 +111,16 @@ void Segment::removeBackground() {
 }
 
 void Segment::drawSegmentHoughLines() {
-  ofSetColor(ofColor( 255, 255, 0 ));
+  ofSetColor(ofColor( 255, 99, 71 ));
   ofNoFill();
   intersectionTL.a.draw();
   intersectionTL.b.draw();
 
-  ofSetColor(ofColor( 255, 0, 255 ));
+  ofSetColor(ofColor( 58, 125, 255 ));
   ofNoFill();
   intersectionBR.a.draw();
   intersectionBR.b.draw();
+
+  ofSetColor(ofColor(0, 0, 0));
+  ofDrawRectangle(imgSpace);
 }

@@ -87,7 +87,7 @@ Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), t
           tmpH.cropFrom(image, imgSpace.getTopLeft().x, imgSpace.getTopLeft().y, imgSpace.width, imgSpace.height);
           tmp.cropFrom(imgCopy, imgSpace.getTopLeft().x, imgSpace.getTopLeft().y, imgSpace.width, imgSpace.height);
 
-          Segment seg(tmpH, tmp, imgSpace.getTopLeft(), pt, pt2, cCount );
+          Segment seg(tmpH, tmp, imgSpace.getTopLeft(), imgSpace.getBottomRight(), pt, pt2, cCount );
           segments.push_back(seg);
       }
     }

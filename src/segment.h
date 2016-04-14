@@ -33,7 +33,7 @@ class Segment {
     bool exportSegments();
 
   public:
-    Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, LineIntersection _intersectionTL, LineIntersection _intersectionBR, int _imageNo);
+    Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, ofPoint _bottomRight, LineIntersection _intersectionTL, LineIntersection _intersectionBR, int _imageNo);
     void exportSegment();
     void addVertex(int i, int row); // Declare a pixel a vertex of the shape
 
@@ -44,6 +44,10 @@ class Segment {
     bool beingUsed = false; // Communicates with main thread about whether this segment is being compared currently or not.
 
     const ofPoint topLeft; // location of the segment in the original image
+    const ofPoint bottomRight; // Bottom right of the segment in original image.
+
+    const ofRectangle imgSpace; // Bounding box of the segment.
+
     const LineIntersection intersectionTL; // Stores the top left point intersection and its corresponding lines.
     const LineIntersection intersectionBR; // Stores the bottom right intersection and its corresponding lines.
 

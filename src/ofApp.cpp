@@ -21,15 +21,24 @@ void ofApp::setup() {
 
   gui->addLabel("Show static segmentation?");
   showSegStatic = gui->addToggle("Show Static Seg", false);
+  showSegStatic->setLabelColor( ofColor(255, 99, 71) );
   gui->addBreak()->setHeight(10.0f);
 
   gui->addLabel("Loop through image modes");
   loopArchitecture = gui->addButton("Loop Architecture");
+  loopArchitecture->setLabelColor( ofColor(255, 99, 71) );
   loopArchitecture->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(10.0f);
 
+  gui->addLabel("Show rebuild process?");
+  showRebuildProcess = gui->addToggle("Show Rebuild");
+  showRebuildProcess->setLabelColor( ofColor(255, 99, 71) );
+  showRebuildProcess->onButtonEvent(this, &ofApp::onButtonEvent);
+  gui->addBreak()->setHeight(20.0f);
+
   gui->addLabel("Start image rebuild");
   rebuildImage = gui->addButton("Rebuild Image");
+  rebuildImage->setLabelColor( ofColor(58, 125, 255) );
   rebuildImage->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(10.0f);
 }
@@ -64,10 +73,11 @@ void ofApp::draw() {
     cout << "No images supplied, or incorrectly... exiting." << endl;
   }
 
-  // Draws the current segment's lines.
-  for ( auto & arc : images )
-    for ( auto & seg : arc.segments )
-      if ( seg.beingUsed ) seg.drawSegmentHoughLines();
+  // Draws the current segment's lines, if enabled.
+  if ( showRebuildProcess->getEnabled() )
+    for ( auto & arc : images )
+      for ( auto & seg : arc.segments )
+        if ( seg.beingUsed ) seg.drawSegmentHoughLines();
 
   // draw make info
   ofDrawBitmapStringHighlight( arguments.at(3) + " + " + arguments.at(4), 10, ofGetHeight()-35 );
