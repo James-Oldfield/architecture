@@ -52,7 +52,8 @@ void ofApp::keyPressed(int key) {
     (toDisplay < images.size()) ? toDisplay ++ : toDisplay = 0;
   } else if (key == OF_KEY_RIGHT) {
     // Kicks of replacement.
-    Architecture::findBestMatches(images.at(0), images.at(1), stoi(arguments.at(5)));
+    compThread.setup(images.at(0), images.at(1), stoi(arguments.at(5)));
+    compThread.startThread();
   } else if (key == OF_KEY_UP) {
     drawHough =! drawHough;
   }

@@ -3,8 +3,11 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "architecture.h"
+#include "comparisonThread.h"
 
 class ofApp : public ofBaseApp {
+private:
+  ComparisonThread compThread;
 public:
   void setup();
   void update();
