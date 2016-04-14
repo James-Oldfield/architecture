@@ -12,6 +12,7 @@
 
 #include "ofMain.h"
 #include "ofxCv.h"
+#include "lineIntersection.h"
 
 using VecPoints = vector<cv::Point>;
 
@@ -32,7 +33,7 @@ class Segment {
     bool exportSegments();
 
   public:
-    Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, int _imageNo);
+    Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, LineIntersection _intersectionTL, LineIntersection _intersectionBR, int _imageNo);
     void exportSegment();
     void addVertex(int i, int row); // Declare a pixel a vertex of the shape
 
@@ -40,8 +41,11 @@ class Segment {
     static constexpr float matchLower = 0.75; // Lower bounds of 'worth' match.
 
     bool hasBeenUsed = false; // Checks whether this segment has been used before or not.
+    bool beingUsed = false; // Communicates with main thread about whether this segment is being compared currently or not.
 
     const ofPoint topLeft; // location of the segment in the original image
+    const LineIntersection intersectionTL; // Stores the top left point intersection and its corresponding lines.
+    const LineIntersection intersectionBR; // Stores the bottom right intersection and its corresponding lines.
 
     double bestMatch = 100; // Stores the best match from matchShapes.
     Segment * bestSegMatch = nullptr; // Stores the best segment match.
@@ -55,6 +59,8 @@ class Segment {
     string name; // Contains the name of the file for easy reference.
 
     static double compareSegs(Segment & seg1, Segment & seg2);
+
+    void drawSegmentHoughLines(); // Draws the Hough Lines associated with the segment.
 
     vector<VecPoints> segContours;
     int biggestContour;

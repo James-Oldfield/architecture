@@ -13,7 +13,7 @@
 using namespace ofxCv;
 using namespace cv;
 
-Segment::Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, int _imageNo): imgSegH(_imgSegH), imgSeg(_imgSeg), topLeft(_topLeft), imageNo(_imageNo), cCount(segCount++) {}
+Segment::Segment(ofImage _imgSegH, ofImage _imgSeg, ofPoint _topLeft, LineIntersection _intersectionTL, LineIntersection _intersectionBR, int _imageNo): imgSegH(_imgSegH), imgSeg(_imgSeg), topLeft(_topLeft), imageNo(_imageNo), intersectionTL(_intersectionTL), intersectionBR(_intersectionBR), cCount(segCount++) {}
 
 int Segment::segCount = 0;
 
@@ -24,6 +24,9 @@ int Segment::segCount = 0;
  * @return double The shape's contour's similarity.
  */
 double Segment::compareSegs(Segment & seg1, Segment & seg2) {
+
+  // let main thread know we're working on this segment
+  seg1.beingUsed = true;
 
   // Ensure we're not using the same segment twice.
   if ( seg2.hasBeenUsed ) return 100;
@@ -59,6 +62,10 @@ double Segment::compareSegs(Segment & seg1, Segment & seg2) {
       seg1.bestSegMatch = &seg2;
     }
   }
+
+
+  // let main thread know we've finished working with this segment.
+  seg1.beingUsed = false;
 
   return result;
 }
@@ -101,4 +108,16 @@ void Segment::removeBackground() {
 
   toOf( alphaImage, imgFinal );
   name = "seg" + to_string(imageNo) + "/segment" + to_string(cCount) + ".png";
+}
+
+void Segment::drawSegmentHoughLines() {
+  ofSetColor(ofColor( 255, 255, 0 ));
+  ofNoFill();
+  intersectionTL.a.draw();
+  intersectionTL.b.draw();
+
+  ofSetColor(ofColor( 255, 0, 255 ));
+  ofNoFill();
+  intersectionBR.a.draw();
+  intersectionBR.b.draw();
 }

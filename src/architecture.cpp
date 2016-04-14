@@ -75,19 +75,19 @@ Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), t
 
   for(auto const &pt : iPts) {
     for(auto const &pt2 : iPts) {
-      if(abs(pt2.x - pt.x) > 75 &&
-         abs(pt2.x - pt.x) < image.getWidth() / 1.5 &&
-         abs(pt2.y - pt.y) > 75 &&
-         abs(pt2.y - pt.y) < image.getWidth() / 1.5
+      if(abs(pt2.intersection.x - pt.intersection.x) > 75 &&
+         abs(pt2.intersection.x - pt.intersection.x) < image.getWidth() / 1.5 &&
+         abs(pt2.intersection.y - pt.intersection.y) > 75 &&
+         abs(pt2.intersection.y - pt.intersection.y) < image.getWidth() / 1.5
         ) {
           ofImage tmp, tmpH;
-          ofRectangle imgSpace = ofRectangle(pt, pt2);
+          ofRectangle imgSpace = ofRectangle(pt.intersection, pt2.intersection);
 
           // create object from the two version of the image
           tmpH.cropFrom(image, imgSpace.getTopLeft().x, imgSpace.getTopLeft().y, imgSpace.width, imgSpace.height);
           tmp.cropFrom(imgCopy, imgSpace.getTopLeft().x, imgSpace.getTopLeft().y, imgSpace.width, imgSpace.height);
 
-          Segment seg(tmpH, tmp, imgSpace.getTopLeft(), cCount );
+          Segment seg(tmpH, tmp, imgSpace.getTopLeft(), pt, pt2, cCount );
           segments.push_back(seg);
       }
     }
@@ -176,7 +176,7 @@ bool Architecture::doSegsIntersect(ofPolyline a, ofPolyline b) {
        * If there are points within a 7px difference
        */
       for( auto pt : iPts ) {
-        if( abs(pt.x - x) < 15 && abs(pt.y - y) < 15 ) {
+        if( abs(pt.intersection.x - x) < 15 && abs(pt.intersection.y - y) < 15 ) {
           unique = false;
           break;
         }
@@ -184,7 +184,7 @@ bool Architecture::doSegsIntersect(ofPolyline a, ofPolyline b) {
 
       // only push the point if there aren't multiples
       if (unique)
-        iPts.push_back( ofPoint(x, y) );
+        iPts.push_back( LineIntersection(ofPoint(x, y), a, b) );
     }
     
     return 1;
@@ -208,16 +208,16 @@ void Architecture::drawImage() {
   // given a reasonable threshold
   if( drawIntersections )
     for(auto const &pt : iPts) {
-      ofDrawCircle(pt.x, pt.y, 2);
+      ofDrawCircle(pt.intersection.x, pt.intersection.y, 2);
 
       for(auto const &pt2 : iPts) {
-        if(abs(pt2.x - pt.x) > 75 &&
-           abs(pt2.x - pt.x) < image.getWidth() / 1.5 &&
-           abs(pt2.y - pt.y) > 75 &&
-           abs(pt2.y - pt.y) < image.getWidth() / 1.5
+        if(abs(pt2.intersection.x - pt.intersection.x) > 75 &&
+           abs(pt2.intersection.x - pt.intersection.x) < image.getWidth() / 1.5 &&
+           abs(pt2.intersection.y - pt.intersection.y) > 75 &&
+           abs(pt2.intersection.y - pt.intersection.y) < image.getWidth() / 1.5
           ) {
             ofImage tmp;
-            ofRectangle imgSpace = ofRectangle(pt, pt2);
+            ofRectangle imgSpace = ofRectangle(pt.intersection, pt2.intersection);
 
             ofNoFill();
             ofDrawRectangle(imgSpace);

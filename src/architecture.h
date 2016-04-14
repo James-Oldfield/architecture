@@ -12,6 +12,7 @@
 #include "ofMain.h"
 #include "ofxCv.h"
 #include "segment.h"
+#include "lineIntersection.h"
 
 using namespace ofxCv;
 using namespace cv;
@@ -25,7 +26,7 @@ class Architecture {
     ofImage thresh;
 
     vector<ofPolyline> cartCoord; // Storing the cartesian representations of lines
-    vector<ofPoint> iPts;
+    vector<LineIntersection> iPts; // Points of line intersection.
 
     vector<Vec2f> lines; // Storing the Hough lines
     Mat threshBin, img; // cv-style binary image
