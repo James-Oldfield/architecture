@@ -14,30 +14,24 @@ void ofApp::setup() {
   /**
    * DatGui setup
    */
-  gui = new ofxDatGui(ofxDatGuiAnchor::TOP_RIGHT);
+  gui = new ofxDatGui(100, 100);
   ofxDatGuiLog::quiet();
 
+  gui->addHeader(":: Drag Me To Reposition ::");
 
-  ofxDatGuiButton* myButton = new ofxDatGuiButton(string label);
-  gui->addBu
-
-  gui->addLabel("Choose the seed colour");
-  gui->addColorPicker("Seed colour")->setColor(ofColor(255, 98, 63));
+  gui->addLabel("Show static segmentation?");
+  showSegStatic = gui->addToggle("Show Static Seg", false);
   gui->addBreak()->setHeight(10.0f);
 
-  gui->addLabel("Or load in a palette from a Dribbble project");
-  gui->addTextInput("URL", "https://dribbble.com/shots/2585138-Sunset-Badge");
-  gui->addBreak()->setHeight(10.0f);
-  gui->setWidth(500);
-
-  gui->addLabel("Choose the type of colour scheme");
-  gui->addDropdown("Palette type", options);
+  gui->addLabel("Loop through image modes");
+  loopArchitecture = gui->addButton("Loop Architecture");
+  loopArchitecture->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(10.0f);
 
-  gui->addButton("Generate Palette");
-  gui->onButtonEvent(this, &ofApp::onButtonEvent);
-  gui->addBreak()->setHeight(30.0f);
-
+  gui->addLabel("Start image rebuild");
+  rebuildImage = gui->addButton("Rebuild Image");
+  rebuildImage->onButtonEvent(this, &ofApp::onButtonEvent);
+  gui->addBreak()->setHeight(10.0f);
 }
 
 void ofApp::update() {};
@@ -49,7 +43,7 @@ void ofApp::draw() {
     if ( toDisplay == images.size() );
     else {
       // draw hough or not?
-      if ( drawHough )
+      if ( showSegStatic->getEnabled() )
         images.at(toDisplay).drawImage();
       else
         images.at(toDisplay).drawImageOriginal();
@@ -80,17 +74,13 @@ void ofApp::draw() {
   ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight()-10 );
 }
 
-void ofApp::mousePressed(int x, int y, int button) {}
-
-void ofApp::keyPressed(int key) {
-  if (key == OF_KEY_RETURN) {
-    // Loop through the pictures
+void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
+  // Handle the loop architecture
+  if ( e.target->getLabel() == "LOOP ARCHITECTURE" )
     (toDisplay < images.size()) ? toDisplay ++ : toDisplay = 0;
-  } else if (key == OF_KEY_RIGHT) {
-    // Kicks off replacement.
+
+  if ( e.target->getLabel() == "REBUILD IMAGE" ) {
     compThread.setup(images.at(0), images.at(1), stoi(arguments.at(5)));
     compThread.startThread();
-  } else if (key == OF_KEY_UP) {
-    drawHough =! drawHough;
   }
 }
