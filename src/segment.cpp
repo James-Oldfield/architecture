@@ -9,6 +9,7 @@
  */
 
 #include "segment.h"
+#include "architecture.h"
 
 using namespace ofxCv;
 using namespace cv;
@@ -31,6 +32,12 @@ double Segment::compareSegs(Segment & seg1, Segment & seg2) {
   // Ensure we're not using the same segment twice.
   if ( seg2.hasBeenUsed ) {
     seg2.beingUsed = false;
+
+    if ( Architecture::playSound ) {
+      Architecture::ambient.setSpeed( ofMap(seg2.topLeft.x, 0, ofGetWidth(), 0, 2) );
+      Architecture::ambient.play();
+    }
+
     return 100;
   }
 

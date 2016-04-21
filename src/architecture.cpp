@@ -14,15 +14,28 @@ using namespace ofxCv;
 using namespace cv;
 
 int Architecture::arcCount = 0;
+bool Architecture::playSound = false;
+ofSoundPlayer Architecture::ambient;
 
 /**
  *  Creates an instance of 'Architecture' and kicks off the segmentation.
  *  
  *  @param string _image - The string to load into the ofImage.
  */
-Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), threshold(_threshold) {
+Architecture::Architecture(string _image, int _threshold, int _playSound): cCount(arcCount++), threshold(_threshold) {
   image.load(_image);
   imgCopy = image;
+
+  if ( _playSound ) {
+    Architecture::playSound = true;
+    // Get the string name without file extension.
+    auto li = _image.find_last_of("."); 
+    string imageName = _image.substr(0, li);
+
+    Architecture::ambient.load(imageName + ".wav");
+    ofDrawBitmapStringHighlight(imageName, 50, 50 );
+    Architecture::ambient.setMultiPlay(true);
+  }
 
   SegmenterThread st;
   st.setup(*this);
@@ -106,6 +119,8 @@ void Architecture::segment() {
      seg.exportSegment();
    } );
 
+   if ( Architecture::playSound )
+     Architecture::ambient.play();
 }
 
 /**

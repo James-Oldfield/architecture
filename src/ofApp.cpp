@@ -5,8 +5,8 @@ using namespace ofxCv;
 using namespace cv;
 
 void ofApp::setup() {
-  Architecture img1(arguments.at(3), stoi(arguments.at(1)));
-  Architecture img2(arguments.at(4), stoi(arguments.at(2)));
+  Architecture img1(arguments.at(3), stoi(arguments.at(1)), stoi(arguments.at(6)));
+  Architecture img2(arguments.at(4), stoi(arguments.at(2)), 0);
 
   images.push_back(img1);
   images.push_back(img2);
@@ -101,5 +101,9 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
   if ( e.target->getLabel() == "REBUILD IMAGE" ) {
     compThread.setup(images.at(0), images.at(1), stoi(arguments.at(5)));
     compThread.startThread();
+
+    if ( Architecture::playSound )
+      Architecture::ambient.play();
   }
+
 }

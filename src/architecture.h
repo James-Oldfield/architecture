@@ -37,11 +37,14 @@ class Architecture {
     bool doSegsIntersect(ofPolyline a, ofPolyline b);
 
   public:
-    Architecture(string _image, int _threshold = 175);
+    Architecture(string _image, int _threshold = 175, int _playSound = 0);
     void drawImage();
     void drawImageOriginal();
 
     void segment();
+
+    static ofSoundPlayer ambient; // Photo's ambient sound.
+    static bool playSound; // play the sound at all?
 
     /**
      * @brief Performs comparison of two image's segments to find the best replacement segment.
