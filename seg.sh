@@ -16,12 +16,15 @@ elif [ "$1" = "interior" ]; then
 elif [ "$1" = "inex" ]; then
   echo "Running command line project with interior images..."
   open -n ./bin/./creativeProject.app/ --args $2 $3 tek.jpg home-cropped.jpg 0
-elif [ "$1" = "train" ]; then
-  echo "Running command line project with interior images..."
-  open -n ./bin/./creativeProject.app/ --args $2 $3 interior-2.jpg http://forums.androidcentral.com/attachments/photo-contests/110643d1396484236t-weekly-photo-contest-architecture-2014-04-03-02.01.44-1.jpg 0
+elif [ "$1" = "brutalCamden" ]; then
+  echo "Running command line project with brutal-house images..."
+  open -n ./bin/./creativeProject.app/ --args 155 313 old/straight.jpg old/camden.jpg 0
 elif [ "$1" = "brutal" ]; then
   echo "Running command line project with brutal-house images..."
-  open -n ./bin/./creativeProject.app/ --args 155 160 https://pbs.twimg.com/media/CePL_W4WwAUG1Tr.jpg https://pbs.twimg.com/media/CeAzXloXEAIXTx4.jpg 0
+  open -n ./bin/./creativeProject.app/ --args 155 313 old/straight.jpg old/camden.jpg 0
+elif [ "$1" = "shard" ]; then
+  echo "Running command line project with shard images..."
+  open -n ./bin/./creativeProject.app/ --args 200 200 shard.jpg shard.jpg 0
 else
   make && make run
 fi

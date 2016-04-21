@@ -11,6 +11,8 @@ void ofApp::setup() {
   images.push_back(img1);
   images.push_back(img2);
 
+  ofSetLineWidth(2);
+
   /**
    * DatGui setup
    */
@@ -24,6 +26,11 @@ void ofApp::setup() {
   showSegStatic->setLabelColor( ofColor(255, 99, 71) );
   gui->addBreak()->setHeight(10.0f);
 
+  gui->addLabel("Show input info?");
+  showInputInfo = gui->addToggle("Show input info", true);
+  showInputInfo->setLabelColor( ofColor(255, 99, 71) );
+  gui->addBreak()->setHeight(10.0f);
+
   gui->addLabel("Loop through image modes");
   loopArchitecture = gui->addButton("Loop Architecture");
   loopArchitecture->setLabelColor( ofColor(255, 99, 71) );
@@ -31,7 +38,7 @@ void ofApp::setup() {
   gui->addBreak()->setHeight(10.0f);
 
   gui->addLabel("Show rebuild process?");
-  showRebuildProcess = gui->addToggle("Show Rebuild");
+  showRebuildProcess = gui->addToggle("Show Rebuild", true);
   showRebuildProcess->setLabelColor( ofColor(255, 99, 71) );
   showRebuildProcess->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(20.0f);
@@ -79,9 +86,11 @@ void ofApp::draw() {
       for ( auto & seg : arc.segments )
         if ( seg.beingUsed ) seg.drawSegmentHoughLines();
 
-  // draw make info
-  ofDrawBitmapStringHighlight( arguments.at(3) + " + " + arguments.at(4), 10, ofGetHeight()-35 );
-  ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight()-10 );
+  if ( showInputInfo->getEnabled() ) {
+    // draw make info
+    ofDrawBitmapStringHighlight( arguments.at(3) + " + " + arguments.at(4), 10, ofGetHeight()-35 );
+    ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight()-10 );
+  }
 }
 
 void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {

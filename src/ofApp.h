@@ -23,6 +23,7 @@ public:
   ofxDatGui * gui;
 
   ofxDatGuiToggle * showSegStatic;
+  ofxDatGuiToggle * showInputInfo;
   ofxDatGuiToggle * showRebuildProcess;
 
   ofxDatGuiButton * loopArchitecture;

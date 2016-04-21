@@ -8,6 +8,7 @@
  */
 
 #include "architecture.h"
+#include "segmenterThread.h"
 
 using namespace ofxCv;
 using namespace cv;
@@ -23,6 +24,12 @@ Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), t
   image.load(_image);
   imgCopy = image;
 
+  SegmenterThread st;
+  st.setup(*this);
+  st.threadedFunction();
+}
+
+void Architecture::segment() {
   thresh.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_GRAYSCALE);
   convertColor(image, thresh, CV_RGB2GRAY);
   
@@ -34,7 +41,7 @@ Architecture::Architecture(string _image, int _threshold): cCount(arcCount++), t
   threshBin = toCv(thresh);
 
   img = toCv(image); // Convert OF image to CV bin representation
-
+  
   // Apply the Hough Lines transform
   HoughLines(threshBin, lines, 1, CV_PI/180, threshold, 0, 0);
 

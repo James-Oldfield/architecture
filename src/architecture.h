@@ -41,6 +41,8 @@ class Architecture {
     void drawImage();
     void drawImageOriginal();
 
+    void segment();
+
     /**
      * @brief Performs comparison of two image's segments to find the best replacement segment.
      *

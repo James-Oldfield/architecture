@@ -29,7 +29,10 @@ double Segment::compareSegs(Segment & seg1, Segment & seg2) {
   seg1.beingUsed = true;
 
   // Ensure we're not using the same segment twice.
-  if ( seg2.hasBeenUsed ) return 100;
+  if ( seg2.hasBeenUsed ) {
+    seg2.beingUsed = false;
+    return 100;
+  }
 
   /**
    * cache member variables for ease of re-use
@@ -111,16 +114,16 @@ void Segment::removeBackground() {
 }
 
 void Segment::drawSegmentHoughLines() {
-  ofSetColor(ofColor( 255, 99, 71 ));
+  ofSetColor(ofColor(255, 0, 0));
   ofNoFill();
   intersectionTL.a.draw();
   intersectionTL.b.draw();
 
-  ofSetColor(ofColor( 58, 125, 255 ));
+  ofSetColor(ofColor(0, 255, 0));
   ofNoFill();
   intersectionBR.a.draw();
   intersectionBR.b.draw();
 
-  ofSetColor(ofColor(0, 0, 0));
+  ofSetColor(ofColor(0, 0, 255));
   ofDrawRectangle(imgSpace);
 }
