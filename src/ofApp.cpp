@@ -5,8 +5,8 @@ using namespace ofxCv;
 using namespace cv;
 
 void ofApp::setup() {
-  Architecture img1(arguments.at(3), stoi(arguments.at(1)), stoi(arguments.at(6)));
-  Architecture img2(arguments.at(4), stoi(arguments.at(2)), 0);
+  Architecture img1(arguments.at(3), stoi(arguments.at(1)), 0);
+  Architecture img2(arguments.at(4), stoi(arguments.at(2)), stoi(arguments.at(6)));
 
   images.push_back(img1);
   images.push_back(img2);
@@ -42,6 +42,12 @@ void ofApp::setup() {
   showRebuildProcess->setLabelColor( ofColor(255, 99, 71) );
   showRebuildProcess->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(20.0f);
+
+  gui->addLabel("Start sound");
+  startSound = gui->addButton("Start Sound");
+  startSound->setLabelColor( ofColor(255, 99, 71) );
+  startSound->onButtonEvent(this, &ofApp::onButtonEvent);
+  gui->addBreak()->setHeight(10.0f);
 
   gui->addLabel("Start image rebuild");
   rebuildImage = gui->addButton("Rebuild Image");
@@ -101,9 +107,19 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
   if ( e.target->getLabel() == "REBUILD IMAGE" ) {
     compThread.setup(images.at(0), images.at(1), stoi(arguments.at(5)));
     compThread.startThread();
-
-    if ( Architecture::playSound )
-      Architecture::ambient.play();
   }
 
+  // Play the sound if globally activated.
+  if ( e.target->getLabel() == "START SOUND" )
+    if ( Architecture::playSound )
+      Architecture::ambient.play();
+
 }
+
+void ofApp::keyPressed(int key){
+  if ( key == 'h' ) {
+    GUIVis =! GUIVis;
+    gui->setVisible(GUIVis);
+  }
+}
+

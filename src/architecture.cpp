@@ -119,8 +119,6 @@ void Architecture::segment() {
      seg.exportSegment();
    } );
 
-   if ( Architecture::playSound )
-     Architecture::ambient.play();
 }
 
 /**

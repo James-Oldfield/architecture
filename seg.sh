@@ -1,30 +1,26 @@
 #!/bin/sh
 
-# First, clear the image output dir if already populated
-if [ "$(ls "./bin/data/seg"*)" ]; then
-  echo "cleaning up old segments..."
-  rm -r ./bin/data/seg*
-fi
-
 # Run either the command line app or make and make run.
 if [ "$1" = "default" ]; then
-  echo "Running command line project with default images..."
-  open -n ./bin/./creativeProject.app/ --args $2 $3 http://www.tekuto.com/wp-content/themes/tekuto2nd/images/topmain/toruso01.jpg?=20151006 long.jpg 0
-elif [ "$1" = "interior" ]; then
-  echo "Running command line project with interior images..."
-  open -n ./bin/./creativeProject.app/ --args $2 $3 https://s-media-cache-ak0.pinimg.com/564x/67/8a/ed/678aed334b030344482dc84f24063552.jpg http://forums.androidcentral.com/attachments/photo-contests/110643d1396484236t-weekly-photo-contest-architecture-2014-04-03-02.01.44-1.jpg 0
-elif [ "$1" = "inex" ]; then
-  echo "Running command line project with interior images..."
-  open -n ./bin/./creativeProject.app/ --args $2 $3 tek.jpg home-cropped.jpg 0
+  open -n ./bin/./creativeProject.app/ --args $2 $3 http://www.tekuto.com/wp-content/themes/tekuto2nd/images/topmain/toruso01.jpg?=20151006 long.jpg 0 0
 elif [ "$1" = "brutalCamden" ]; then
-  echo "Running command line project with brutal-house images..."
-  open -n ./bin/./creativeProject.app/ --args 155 313 old/straight.jpg old/camden.jpg 0
+  open -n ./bin/./creativeProject.app/ --args 155 313 straight.jpg camden.jpg 0 0
 elif [ "$1" = "brutal" ]; then
-  echo "Running command line project with brutal-house images..."
-  open -n ./bin/./creativeProject.app/ --args 155 313 old/straight.jpg old/camden.jpg 0
+  open -n ./bin/./creativeProject.app/ --args 155 313 straight.jpg camden.jpg 0 0
 elif [ "$1" = "shard" ]; then
-  echo "Running command line project with shard images..."
-  open -n ./bin/./creativeProject.app/ --args 200 200 shard.jpg shard.jpg 0
+  open -n ./bin/./creativeProject.app/ --args 200 200 shard.jpg shard.jpg 0 0
+
+# SOUND PRESETS
+elif [ "$1" = "brutSound" ]; then
+  open -n ./bin/./creativeProject.app/ --args 190 190 brut2.jpg brut1.jpg 0 1
+elif [ "$1" = "shardSound" ]; then
+  open -n ./bin/./creativeProject.app/ --args 195 195 shard.jpg shard.jpg 0 1
+elif [ "$1" = "knightSound" ]; then
+  open -n ./bin/./creativeProject.app/ --args 200 195 shard.jpg shard.jpg 0 1
+elif [ "$1" = "shardBKSound" ]; then
+  open -n ./bin/./creativeProject.app/ --args 200 225 shard.jpg iphone/bk2.jpg 0 1
+elif [ "$1" = "camdenSound" ]; then
+  open -n ./bin/./creativeProject.app/ --args 140 315 straight2.jpg camden.jpg 0 1
 else
   make && make run
 fi

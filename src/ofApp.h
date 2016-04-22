@@ -13,6 +13,7 @@ public:
   void setup();
   void update();
   void draw();
+  void keyPressed(int key);
 
   vector<string> arguments;
   vector<Architecture> images;
@@ -27,7 +28,10 @@ public:
   ofxDatGuiToggle * showRebuildProcess;
 
   ofxDatGuiButton * loopArchitecture;
+  ofxDatGuiButton * startSound;
   ofxDatGuiButton * rebuildImage;
+
+  bool GUIVis = true;
 
   void onButtonEvent(ofxDatGuiButtonEvent e);
 };

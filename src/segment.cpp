@@ -32,12 +32,7 @@ double Segment::compareSegs(Segment & seg1, Segment & seg2) {
   // Ensure we're not using the same segment twice.
   if ( seg2.hasBeenUsed ) {
     seg2.beingUsed = false;
-
-    if ( Architecture::playSound ) {
-      Architecture::ambient.setSpeed( ofMap(seg2.topLeft.x, 0, ofGetWidth(), 0, 2) );
-      Architecture::ambient.play();
-    }
-
+    seg1.beingUsed = false;
     return 100;
   }
 
@@ -62,6 +57,10 @@ double Segment::compareSegs(Segment & seg1, Segment & seg2) {
 
   // Write to file if the comparison result is within threshold.
   if (result != 0 && result > Segment::matchUpper && result < Segment::matchLower) {
+    if ( Architecture::playSound ) {
+      Architecture::ambient.setSpeed( ofMap(result, 0, 1, .9, 1.1) );
+      Architecture::ambient.play();
+    }
     // If it's a better comparison than before
     if (result < seg1.bestMatch) {
       if ( seg1.bestSegMatch != nullptr ) seg1.bestSegMatch->hasBeenUsed = false; // No longer being replaced.
