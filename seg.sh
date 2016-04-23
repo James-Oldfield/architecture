@@ -16,7 +16,7 @@ elif [ "$1" = "brutSound" ]; then
 elif [ "$1" = "shardSound" ]; then
   open -n ./bin/./creativeProject.app/ --args 195 195 shard.jpg shard.jpg 0 1
 elif [ "$1" = "knightSound" ]; then
-  open -n ./bin/./creativeProject.app/ --args 200 195 shard.jpg shard.jpg 0 1
+  open -n ./bin/./creativeProject.app/ --args 200 265 shard.jpg knight.jpg 0 1
 elif [ "$1" = "shardBKSound" ]; then
   open -n ./bin/./creativeProject.app/ --args 200 225 shard.jpg iphone/bk2.jpg 0 1
 elif [ "$1" = "camdenSound" ]; then

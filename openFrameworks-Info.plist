@@ -5,7 +5,7 @@
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>NSHighResolutionCapable</key>
-	<true/>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
