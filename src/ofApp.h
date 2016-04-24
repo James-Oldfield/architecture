@@ -25,6 +25,7 @@ public:
 
   ofxDatGuiToggle * showSegStatic;
   ofxDatGuiToggle * showInputInfo;
+  ofxDatGuiToggle * showNewArc;
   ofxDatGuiToggle * showRebuildProcess;
 
   ofxDatGuiButton * loopArchitecture;

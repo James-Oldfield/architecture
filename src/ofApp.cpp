@@ -10,8 +10,8 @@ void ofApp::setup() {
 
   images.push_back(img1);
   images.push_back(img2);
-
-  ofSetLineWidth(2);
+  
+  ofSetLineWidth(1);
 
   /**
    * DatGui setup
@@ -27,7 +27,7 @@ void ofApp::setup() {
   gui->addBreak()->setHeight(10.0f);
 
   gui->addLabel("Show input info?");
-  showInputInfo = gui->addToggle("Show input info", true);
+  showInputInfo = gui->addToggle("Show input info", false);
   showInputInfo->setLabelColor( ofColor(255, 99, 71) );
   gui->addBreak()->setHeight(10.0f);
 
@@ -41,6 +41,12 @@ void ofApp::setup() {
   showRebuildProcess = gui->addToggle("Show Rebuild", true);
   showRebuildProcess->setLabelColor( ofColor(255, 99, 71) );
   showRebuildProcess->onButtonEvent(this, &ofApp::onButtonEvent);
+  gui->addBreak()->setHeight(20.0f);
+
+  gui->addLabel("Show new creation?");
+  showNewArc = gui->addToggle("Show creation", true);
+  showNewArc->setLabelColor( ofColor(255, 99, 71) );
+  showNewArc->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(20.0f);
 
   gui->addLabel("Start sound");
@@ -80,6 +86,14 @@ void ofApp::draw() {
 
       ofSetColor(255, 255, 255);
       seg.bestSegMatch->imgFinal.draw(seg.topLeft, rat * seg.bestSegMatch->imgFinal.getWidth(), rat * seg.bestSegMatch->imgFinal.getHeight());
+
+      // if the new architecture is desired to be shown on the side.
+      if ( showNewArc->getEnabled() ) {
+        ofPushMatrix();
+          ofTranslate(images.at(0).image.getWidth(), 0);
+          seg.bestSegMatch->imgFinal.draw(seg.topLeft, rat * seg.bestSegMatch->imgFinal.getWidth(), rat * seg.bestSegMatch->imgFinal.getHeight());
+          ofPopMatrix();
+      }
     }
   } else {
     exit();

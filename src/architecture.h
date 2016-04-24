@@ -22,7 +22,6 @@ class Architecture {
     static int arcCount; // Global count of objects created
 
     const int cCount; // local cache of global architecture count
-    ofImage image;
     ofImage thresh;
 
     vector<ofPolyline> cartCoord; // Storing the cartesian representations of lines
@@ -40,6 +39,7 @@ class Architecture {
     Architecture(string _image, int _threshold = 175, int _playSound = 0);
     void drawImage();
     void drawImageOriginal();
+    ofImage image;
 
     void segment();
 
