@@ -76,7 +76,7 @@ void ofApp::draw() {
       else
         images.at(toDisplay).drawImageOriginal();
     }
-
+    
   // Draw all the best segment replacements in place of the old ones.
   for ( auto const & seg : images.at(0).segments )
     if ( seg.bestSegMatch != nullptr ) {
@@ -92,6 +92,9 @@ void ofApp::draw() {
         ofPushMatrix();
           ofTranslate(images.at(0).image.getWidth(), 0);
           seg.bestSegMatch->imgFinal.draw(seg.topLeft, rat * seg.bestSegMatch->imgFinal.getWidth(), rat * seg.bestSegMatch->imgFinal.getHeight());
+        
+          if (seg.beingUsed)
+            seg.imgFinal.draw(seg.topLeft, seg.imgSpace.getWidth(), seg.imgSpace.getHeight());
           ofPopMatrix();
       }
     }

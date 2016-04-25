@@ -58,7 +58,7 @@ double Segment::compareSegs(Segment & seg1, Segment & seg2) {
   // Write to file if the comparison result is within threshold.
   if (result != 0 && result > Segment::matchUpper && result < Segment::matchLower) {
     if ( Architecture::playSound ) {
-      Architecture::ambient.setSpeed( ofMap(result, 0, 1, .8, 1.2) );
+      Architecture::ambient.setSpeed( ofMap(result, 0, .75, .95, 1.0) );
       Architecture::ambient.setLoop(false);
       Architecture::ambient.play();
     }
