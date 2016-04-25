@@ -21,6 +21,9 @@ public:
   int toDisplay = 0;
   ofVec2f toCompare = { 0, 0 };
 
+  int building = 0;
+  int noPairs = 3;
+
   ofxDatGui * gui;
 
   ofxDatGuiToggle * showSegStatic;

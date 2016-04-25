@@ -934,12 +934,12 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				6E26E4741C7B748C00D36AF5 /* architecture.cpp */,
 				1A7E8FC11CC7E1C6004AD46B /* comparisonThread.h */,
 				1A7E8FC21CC7E1C6004AD46B /* lineIntersection.cpp */,
 				1A7E8FC31CC7E1C6004AD46B /* lineIntersection.h */,
 				1A7E8FC41CC7E1C6004AD46B /* segmenterThread.h */,
 				6E26E4751C7B748C00D36AF5 /* architecture.h */,
+				6E26E4741C7B748C00D36AF5 /* architecture.cpp */,
 				6E26E46B1C7B6C7600D36AF5 /* segment.cpp */,
 				6E26E46C1C7B6C7600D36AF5 /* segment.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,

@@ -45,6 +45,7 @@ class Architecture {
 
     static ofSoundPlayer ambient; // Photo's ambient sound.
     static bool playSound; // play the sound at all?
+    string imageName; // stores the sound file name
 
     /**
      * @brief Performs comparison of two image's segments to find the best replacement segment.

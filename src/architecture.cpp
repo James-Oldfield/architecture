@@ -30,10 +30,9 @@ Architecture::Architecture(string _image, int _threshold, int _playSound): cCoun
     Architecture::playSound = true;
     // Get the string name without file extension.
     auto li = _image.find_last_of("."); 
-    string imageName = _image.substr(0, li);
+    imageName = _image.substr(0, li);
 
     Architecture::ambient.load(imageName + ".wav");
-    ofDrawBitmapStringHighlight(imageName, 50, 50 );
     Architecture::ambient.setMultiPlay(true);
   }
 

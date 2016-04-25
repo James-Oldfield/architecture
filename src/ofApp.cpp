@@ -5,11 +5,24 @@ using namespace ofxCv;
 using namespace cv;
 
 void ofApp::setup() {
-  Architecture img1(arguments.at(3), stoi(arguments.at(1)), 0);
-  Architecture img2(arguments.at(4), stoi(arguments.at(2)), stoi(arguments.at(6)));
+  // Shard recursive
+  Architecture img1("shard.jpg", 210, 0);
+  Architecture img2("shard.jpg", 210, 1);
+
+  // Stacked
+  Architecture img3("plain.jpg", 185, 0);
+  Architecture img4("gold.jpg", 235, 0);
+
+  // BK
+  //Architecture img5("brut2.jpg", 190, 0);
+  //Architecture img6("bk2.jpg", 233, 0);
 
   images.push_back(img1);
   images.push_back(img2);
+  images.push_back(img3);
+  images.push_back(img4);
+  // images.push_back(img5);
+  //images.push_back(img6);
   
   ofSetLineWidth(1);
 
@@ -55,6 +68,12 @@ void ofApp::setup() {
   startSound->onButtonEvent(this, &ofApp::onButtonEvent);
   gui->addBreak()->setHeight(10.0f);
 
+  gui->addLabel("Next building");
+  startSound = gui->addButton("Next building");
+  startSound->setLabelColor( ofColor(255, 99, 71) );
+  startSound->onButtonEvent(this, &ofApp::onButtonEvent);
+  gui->addBreak()->setHeight(10.0f);
+
   gui->addLabel("Start image rebuild");
   rebuildImage = gui->addButton("Rebuild Image");
   rebuildImage->setLabelColor( ofColor(58, 125, 255) );
@@ -77,8 +96,8 @@ void ofApp::draw() {
         images.at(toDisplay).drawImageOriginal();
     }
     
-  // Draw all the best segment replacements in place of the old ones.
-  for ( auto const & seg : images.at(0).segments )
+// Draw all the best segment replacements in place of the old ones.
+  for ( auto const & seg : images.at(building).segments )
     if ( seg.bestSegMatch != nullptr ) {
 
       // Resize the image to boundaries of original seg, keeping ratio.
@@ -90,7 +109,7 @@ void ofApp::draw() {
       // if the new architecture is desired to be shown on the side.
       if ( showNewArc->getEnabled() ) {
         ofPushMatrix();
-          ofTranslate(images.at(0).image.getWidth(), 0);
+          ofTranslate(images.at(building).image.getWidth(), 0);
           seg.bestSegMatch->imgFinal.draw(seg.topLeft, rat * seg.bestSegMatch->imgFinal.getWidth(), rat * seg.bestSegMatch->imgFinal.getHeight());
         
           if (seg.beingUsed)
@@ -108,12 +127,6 @@ void ofApp::draw() {
     for ( auto & arc : images )
       for ( auto & seg : arc.segments )
         if ( seg.beingUsed ) seg.drawSegmentHoughLines();
-
-  if ( showInputInfo->getEnabled() ) {
-    // draw make info
-    ofDrawBitmapStringHighlight( arguments.at(3) + " + " + arguments.at(4), 10, ofGetHeight()-35 );
-    ofDrawBitmapStringHighlight( arguments.at(1) + " " + arguments.at(2), 10, ofGetHeight()-10 );
-  }
 }
 
 void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
@@ -122,7 +135,7 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
     (toDisplay < images.size()) ? toDisplay ++ : toDisplay = 0;
 
   if ( e.target->getLabel() == "REBUILD IMAGE" ) {
-    compThread.setup(images.at(0), images.at(1), stoi(arguments.at(5)));
+    compThread.setup(images.at(building), images.at(building+1), 0);
     compThread.startThread();
   }
 
@@ -131,6 +144,18 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
     if ( Architecture::playSound )
       Architecture::ambient.play();
 
+  if ( e.target->getLabel() == "NEXT BUILDING" ) {
+    Architecture::ambient.stop();
+    
+    if ( building < 5 ) {
+      building ++;
+    } else {
+      building = 0;
+    }
+    
+    Architecture::ambient.load(images.at(building).imageName);
+    Architecture::ambient.setMultiPlay(true);
+  }
 }
 
 void ofApp::keyPressed(int key){
