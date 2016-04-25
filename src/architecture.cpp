@@ -25,12 +25,13 @@ ofSoundPlayer Architecture::ambient;
 Architecture::Architecture(string _image, int _threshold, int _playSound): cCount(arcCount++), threshold(_threshold) {
   image.load(_image);
   imgCopy = image;
+  
+  // Get the string name without file extension.
+  auto li = _image.find_last_of("."); 
+  imageName = _image.substr(0, li);
 
   if ( _playSound ) {
     Architecture::playSound = true;
-    // Get the string name without file extension.
-    auto li = _image.find_last_of("."); 
-    imageName = _image.substr(0, li);
 
     Architecture::ambient.load(imageName + ".wav");
     Architecture::ambient.setMultiPlay(true);
