@@ -32,7 +32,7 @@ elif [ "$1" = "shard6" ]; then # 6:47 run time.
 elif [ "$1" = "gold6" ]; then # 6:00 + run time.
   open -n ./bin/./creative_project.app/ --args 185 235 plain.jpg gold.jpg 0 1
 elif [ "$1" = "bk" ]; then # 2:30+ run time
-  open -n ./bin/./creative_project.app/ --args 190 233 brut2.jpg bk2.jpg 0 1
+  open -n ./bin/./creative_project.app/ --args 210 230 brut2.jpg bk2.jpg 0 1
 else
   make && make run
 fi
