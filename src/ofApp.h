@@ -9,6 +9,7 @@
 class ofApp : public ofBaseApp {
 private:
   ComparisonThread compThread;
+  // vector<ComparisonThread> compThreads;
 public:
   void setup();
   void update();
@@ -36,6 +37,7 @@ public:
   ofxDatGuiButton * rebuildImage;
 
   bool GUIVis = true;
+  bool hasBeenPlayed = false;
 
   void onButtonEvent(ofxDatGuiButtonEvent e);
 };

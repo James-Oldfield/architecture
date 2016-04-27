@@ -6,23 +6,29 @@ using namespace cv;
 
 void ofApp::setup() {
   // Shard recursive
-  Architecture img1("shard.jpg", 220, 0);
+  Architecture img1("shard.jpg", 210, 0);
   Architecture img2("shard.jpg", 210, 1);
 
   // Stacked
-  Architecture img3("plain.jpg", 200, 0);
-  Architecture img4("gold.jpg", 250, 0);
+  Architecture img3("plain.jpg", 185, 0);
+  Architecture img4("gold.jpg", 237, 0);
 
   // BK
-  //Architecture img5("brut2.jpg", 190, 0);
-  //Architecture img6("bk2.jpg", 233, 0);
+  Architecture img5("brut2.jpg", 210, 0);
+  Architecture img6("bk2.jpg", 232, 0);
+  
+  // Camden
+  Architecture img7("straight2.jpg", 140, 0);
+  Architecture img8("camden.jpg", 320, 0);
 
   images.push_back(img1);
   images.push_back(img2);
   images.push_back(img3);
   images.push_back(img4);
-  // images.push_back(img5);
-  //images.push_back(img6);
+  images.push_back(img5);
+  images.push_back(img6);
+  images.push_back(img7);
+  images.push_back(img8);
   
   ofSetLineWidth(1);
 
@@ -96,6 +102,43 @@ void ofApp::draw() {
         images.at(building).drawImageOriginal();
     }
     
+    if ( !compThread.isThreadRunning() && hasBeenPlayed ) {
+      Architecture::ambient.stop();
+      compThread.stopThread();
+      hasBeenPlayed = false;
+      
+      // Reset the segments
+      for ( auto & seg : images.at(building).segments ) {
+        seg.bestSegMatch = nullptr;
+        seg.bestMatch = 100;
+        seg.hasBeenUsed = false;
+        seg.beingUsed = false;
+      }
+      
+      for ( auto & seg : images.at(building+1).segments ) {
+        seg.bestSegMatch = nullptr;
+        seg.bestMatch = 100;
+        seg.hasBeenUsed = false;
+        seg.beingUsed = false;
+      }
+      
+      Architecture::playSound = false;
+      Architecture::ambient.unload();
+      
+      if ( building < 6 )
+        building += 2;
+      else
+        building = 0;
+      
+      hasBeenPlayed = true;
+      Architecture::ambient.load(images.at(building+1).imageName + ".wav");
+      Architecture::playSound = true;
+      Architecture::ambient.setMultiPlay(true);
+      
+      compThread.setup(images.at(building), images.at(building+1), 0);
+      compThread.startThread();
+    }
+    
 // Draw all the best segment replacements in place of the old ones.
   for ( auto const & seg : images.at(building).segments )
     if ( seg.bestSegMatch != nullptr ) {
@@ -135,10 +178,10 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
     (toDisplay < images.size()) ? toDisplay ++ : toDisplay = 0;
 
   if ( e.target->getLabel() == "REBUILD IMAGE" ) {
-      Architecture::ambient.load(images.at(building+1).imageName + ".wav");
-      Architecture::playSound = true;
-      Architecture::ambient.setMultiPlay(true);
-      Architecture::ambient.play();
+    hasBeenPlayed = true;
+    Architecture::ambient.load(images.at(building+1).imageName + ".wav");
+    Architecture::playSound = true;
+    Architecture::ambient.setMultiPlay(true);
     
     compThread.setup(images.at(building), images.at(building+1), 0);
     compThread.startThread();
@@ -150,21 +193,40 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
       Architecture::ambient.play();
 
   if ( e.target->getLabel() == "NEXT BUILDING" ) {
-    Architecture::ambient.stop();
-    
-    for ( auto & seg : images.at(building).segments ) {
-      seg.bestSegMatch = nullptr;
-    }
-    
-    Architecture::playSound = false;
-    Architecture::ambient.unload();
-    
-    if ( building < 2 ) {
-      building += 2;
-    } else {
-      building = 0;
-    }
-    
+      Architecture::ambient.stop();
+      compThread.stopThread();
+      hasBeenPlayed = false;
+      
+      // Reset the segments
+      for ( auto & seg : images.at(building).segments ) {
+        seg.bestSegMatch = nullptr;
+        seg.bestMatch = 100;
+        seg.hasBeenUsed = false;
+        seg.beingUsed = false;
+      }
+      
+      for ( auto & seg : images.at(building+1).segments ) {
+        seg.bestSegMatch = nullptr;
+        seg.bestMatch = 100;
+        seg.hasBeenUsed = false;
+        seg.beingUsed = false;
+      }
+      
+      Architecture::playSound = false;
+      Architecture::ambient.unload();
+      
+      if ( building < 6 )
+        building += 2;
+      else
+        building = 0;
+      
+      hasBeenPlayed = true;
+      Architecture::ambient.load(images.at(building+1).imageName + ".wav");
+      Architecture::playSound = true;
+      Architecture::ambient.setMultiPlay(true);
+      
+      compThread.setup(images.at(building), images.at(building+1), 0);
+      compThread.startThread();
   }
 }
 
