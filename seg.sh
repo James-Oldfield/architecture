@@ -33,6 +33,10 @@ elif [ "$1" = "gold6" ]; then # 6:00 + run time.
   open -n ./bin/./creative_project.app/ --args 185 235 plain.jpg gold.jpg 0 1
 elif [ "$1" = "bk" ]; then # 2:30+ run time
   open -n ./bin/./creative_project.app/ --args 210 230 brut2.jpg bk2.jpg 0 1
+elif [ "$1" = "bb" ]; then
+  open -n ./bin/./creative_project.app/ --args 230 250 gold.jpg bb.jpg 0 0
+elif [ "$1" = "shardBridge" ]; then
+  open -n ./bin/./creative_project.app/ --args 210 275 shard.jpg bridge.jpg 0 1
 else
   make && make run
 fi
