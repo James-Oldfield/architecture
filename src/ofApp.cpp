@@ -11,15 +11,23 @@ void ofApp::setup() {
 
   // Stacked
   Architecture img3("plain.jpg", 185, 0);
-  Architecture img4("gold.jpg", 237, 0);
+  Architecture img4("gold.jpg", 238, 0);
+
+  // Shard and bridge
+  Architecture img5("shard.jpg", 210, 0);
+  Architecture img6("bridge.jpg", 275, 0);
 
   // BK
-  Architecture img5("brut2.jpg", 210, 0);
-  Architecture img6("bk2.jpg", 232, 0);
+  Architecture img7("brut2.jpg", 210, 0);
+  Architecture img8("bk2.jpg", 232, 0);
+
+  // big ben
+  Architecture img9("gold.jpg", 250, 0);
+  Architecture img10("bb.jpg", 250, 0);
   
   // Camden
-  Architecture img7("straight2.jpg", 140, 0);
-  Architecture img8("camden.jpg", 320, 0);
+  Architecture img11("straight2.jpg", 140, 0);
+  Architecture img12("camden.jpg", 325, 0);
 
   images.push_back(img1);
   images.push_back(img2);
@@ -29,6 +37,10 @@ void ofApp::setup() {
   images.push_back(img6);
   images.push_back(img7);
   images.push_back(img8);
+  images.push_back(img9);
+  images.push_back(img10);
+  images.push_back(img11);
+  images.push_back(img12);
   
   ofSetLineWidth(1);
 
@@ -125,7 +137,7 @@ void ofApp::draw() {
       Architecture::playSound = false;
       Architecture::ambient.unload();
       
-      if ( building < 6 )
+      if ( building < images.size()-2)
         building += 2;
       else
         building = 0;
@@ -215,7 +227,7 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e) {
       Architecture::playSound = false;
       Architecture::ambient.unload();
       
-      if ( building < 6 )
+      if ( building < images.size()-2 )
         building += 2;
       else
         building = 0;
